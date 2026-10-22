@@ -13,7 +13,10 @@ function startExplorer() {
     if (!nodes.has(id)) nodes.set(id, {
       innerHTML: '', textContent: '', hidden: false, dataset: {},
       classList: {toggle() {}, add() {}, remove() {}},
-      setAttribute() {}, querySelectorAll() {return [];},
+      attributes: {}, focusCount: 0,
+      setAttribute(name, value) {this.attributes[name] = value;},
+      focus() {this.focusCount++;},
+      querySelectorAll() {return [];},
       querySelector: selector => node(selector),
       handlers: {},
       addEventListener(type, fn) {this.handlers[type] = fn;},
@@ -69,4 +72,31 @@ test('expanded gallery follows search, empty results and ordering', () => {
   node('search').dispatch('input', '');
   node('sort').dispatch('change', 'id');
   assert.deepEqual(ids(), Array.from(rows, r => r.id).sort().slice(0, 48));
+});
+
+test('model changes restore focus to the changed selector for all six models', () => {
+  const {node, rows, models} = startExplorer();
+  const selected = rows.find(r => r.id === 'dish_1566416701');
+  for (const selector of ['#modelA', '#modelB']) {
+    models.forEach((model, index) => {
+      const other = selector === '#modelA' ? '#modelB' : '#modelA';
+      const otherFocus = node(other).focusCount;
+      node(selector).dispatch('change', model.code);
+      assert.equal(node(selector).focusCount, index + 1);
+      assert.equal(node(other).focusCount, otherFocus);
+      assert.ok(node('detail').innerHTML.includes(selected.c[index]));
+    });
+  }
+});
+
+test('dish choices retain button semantics and filters expose one active state', () => {
+  const {node} = startExplorer();
+  assert.equal((node('dishList').innerHTML.match(/<div role="listitem"><button /g) || []).length, 24);
+  assert.doesNotMatch(node('dishList').innerHTML, /<button[^>]*role="listitem"/);
+  for (const active of ['advantage', 'caution', 'all']) {
+    node('filter-' + active).dispatch('click');
+    for (const filter of ['all', 'advantage', 'caution']) {
+      assert.equal(node('filter-' + filter).attributes['aria-pressed'], String(filter === active));
+    }
+  }
 });

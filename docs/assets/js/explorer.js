@@ -32,7 +32,8 @@
     document.querySelectorAll('#gallery .gallery-item').forEach(el => {
       const selected = el.dataset.dish === state.selected;
       el.classList.toggle('active', selected);
-      el.setAttribute('aria-pressed', String(selected));
+      if (selected) el.setAttribute('aria-current', 'true');
+      else el.removeAttribute('aria-current');
     });
   }
   let allPhotoLimit = 48;
@@ -64,7 +65,7 @@
     if (!items.length) {node.innerHTML='<p class="empty-state">No matching dishes. Try a different ingredient, dish ID, or filter.</p>';return;}
     node.innerHTML=items.slice(0,state.limit).map(r => {
       const preview = `<img src="${imageSrc(r)}" alt="" loading="lazy" decoding="async">`;
-      return `<button type="button" role="listitem" class="dish-item ${r.id===state.selected?'active':''}" data-dish="${r.id}" aria-pressed="${r.id===state.selected}"><span class="dish-mini">${preview}</span><span class="dish-content"><strong>${txt(r.i)}</strong><small>${txt(r.id)} · ${nice(r.gt[0])} kcal measured</small></span><span class="dish-gain">${gain(r)>0?'+':''}${gain(r)}</span></button>`;
+      return `<div role="listitem"><button type="button" class="dish-item ${r.id===state.selected?'active':''}" data-dish="${r.id}" aria-pressed="${r.id===state.selected}"><span class="dish-mini">${preview}</span><span class="dish-content"><strong>${txt(r.i)}</strong><small>${txt(r.id)} · ${nice(r.gt[0])} kcal measured</small></span><span class="dish-gain">${gain(r)>0?'+':''}${gain(r)}</span></button></div>`;
     }).join('');
     node.querySelectorAll('button[data-dish]').forEach(el=>el.addEventListener('click',()=>choose(el.dataset.dish)));
   }
@@ -104,18 +105,25 @@
       <div class="field-table-wrap"><table class="field-table"><thead><tr><th>ATTRIBUTE</th><th>SUPPLIED</th><th>MEASURED</th><th>MODEL A</th><th>MODEL B</th></tr></thead><tbody>
       ${cols.map(([name,unit],j)=>`<tr><td>${name} <span class="quiet">(${unit})</span></td><td>${nice(r.f[j])}</td><td>${nice(r.gt[j])}</td><td>${attrCell(r.n[a][j],r.f[j])}</td><td>${attrCell(r.n[b][j],r.f[j])}</td></tr>`).join('')}
       </tbody></table></div><p class="legend"><span class="ok">●</span> Within ±1 of supplied fact &nbsp;&nbsp; <span class="bad">●</span> Outside ±1 &nbsp;&nbsp; — Not parsed. “Measured” comes from Nutrition5k metadata.</p>${caution}`;
-    node.querySelector('#modelA').addEventListener('change',e => {state.a=e.target.value;detail();});
-    node.querySelector('#modelB').addEventListener('change',e => {state.b=e.target.value;detail();});
+    [['#modelA','a'],['#modelB','b']].forEach(([selector,key]) => {
+      node.querySelector(selector).addEventListener('change',e => {
+        state[key]=e.target.value;detail();
+        node.querySelector(selector).focus({preventScroll:true});
+      });
+    });
     node.querySelector('#random').addEventListener('click',()=>choose(rows[Math.floor(Math.random()*rows.length)].id));
   }
   function scores(){
-    document.querySelector('#modelStats').innerHTML = models.map(m=>`<div class="model-row ${m.code==='grounded'?'primary':''}"><div class="model-name">${txt(m.label)}<small>${m.code==='grounded'?'PRIMARY RESEARCH MODEL':m.code.startsWith('conventional')?'IMAGE ONLY':m.code==='template'?'SHARED TEMPLATE RULE':m.code==='t5'?'TEXT ONLY':'IMAGE + FACTS'}</small></div><div class="progress-wrap"><div class="progress-track"><div class="progress-value" style="width:${m.nutacc}%"></div></div><b>${m.nutacc.toFixed(2)}%</b></div><span class="model-number">${m.bleu.toFixed(4)}</span><span class="model-number">${m.cider.toFixed(4)}</span></div>`).join('');
+    document.querySelector('#modelStats').innerHTML = models.map(m=>`<div class="model-row ${m.code==='grounded'?'primary':''}"><div class="model-name">${txt(m.label)}<small>${m.code==='grounded'?'PRIMARY RESEARCH MODEL':m.code.startsWith('conventional')?'IMAGE ONLY':m.code==='template'?'SHARED TEMPLATE RULE':m.code==='t5'?'TEXT ONLY':'IMAGE + FACTS'}</small></div><div class="progress-wrap"><div class="progress-track"><div class="progress-value" style="width:${m.nutacc}%"></div></div><b><span class="metric-label">NutAcc</span>${m.nutacc.toFixed(2)}%</b></div><span class="model-number"><span class="metric-label">BLEU-4</span>${m.bleu.toFixed(4)}</span><span class="model-number"><span class="metric-label">CIDEr</span>${m.cider.toFixed(4)}</span></div>`).join('');
   }
   document.getElementById('search').addEventListener('input',e=>{state.q=e.target.value;state.limit=24;allPhotoLimit=48;list();renderFullPhotoGallery();});
   document.getElementById('sort').addEventListener('change',e=>{state.sort=e.target.value;state.limit=24;allPhotoLimit=48;list();renderFullPhotoGallery();});
   document.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{
     state.filter=btn.dataset.filter;state.limit=24;allPhotoLimit=48;
-    document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b===btn));list();renderFullPhotoGallery();
+    document.querySelectorAll('[data-filter]').forEach(b=>{
+      b.classList.toggle('active',b===btn);
+      b.setAttribute('aria-pressed',String(b===btn));
+    });list();renderFullPhotoGallery();
   }));
   document.getElementById('loadMore').addEventListener('click',()=>{state.limit+=30;list();});
   document.querySelectorAll('#gallery .gallery-item').forEach(el => {

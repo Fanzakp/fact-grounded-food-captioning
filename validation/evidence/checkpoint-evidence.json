@@ -1,0 +1,288 @@
+{
+  "description": "Retained evidence from inference performed on 2026-10-16. Packaging checks do not constitute a new model run.",
+  "sources": {
+    "fact-grounded-food-captioning.zip": "eac2e56f96d24348cb52294625f1166b0334ab4ea07e558293390c71693d18eb",
+    "fact-grounded-nutrition-captioning-CHECKPOINT-REVIEWED.zip": "74fa7115973a9c10c4e85e3033868c9925a75bf2290129a1c22d60a3357703b2"
+  },
+  "runs": {
+    "cnn": {
+      "stage": "cnn",
+      "rows": 507,
+      "device": "cpu",
+      "threads": 4,
+      "batch_size": 8,
+      "date": "2026-10-16",
+      "original_notebook_sha256": "7ed5236786885b5fb94c2994f9163c6bf29a94565c063492b18c267ffc78496e",
+      "versions": {
+        "torch": "2.11.0+cpu",
+        "torchvision": "0.26.0+cpu",
+        "timm": "1.0.27"
+      },
+      "preprocessing": "PIL RGB; torchvision Resize((224,224)) bilinear/antialias default; ToTensor; ImageNet normalization.",
+      "training_performed": false,
+      "first_batch_repeat_max_abs_diff": 0.0,
+      "checkpoint_sha256": "b36540c5769bd630668345338b74daaa7812f7f4fc79d3e7eb7c926765f8bb8f",
+      "checkpoint_bytes": 25153495,
+      "strict_state_load": true,
+      "checkpoint_epoch": 45,
+      "checkpoint_val_loss": 0.08999663494203401,
+      "metrics": {
+        "calories": {
+          "MAE": 55.667517878428086,
+          "RMSE": 87.31129759128358,
+          "R2": 0.8304346914020417,
+          "mean_abs_difference_from_archive": 11.106741933872584,
+          "max_abs_difference_from_archive": 63.993064648437496
+        },
+        "protein": {
+          "MAE": 5.354011384250643,
+          "RMSE": 9.683253033149867,
+          "R2": 0.7406337280040329,
+          "mean_abs_difference_from_archive": 0.9540629478135602,
+          "max_abs_difference_from_archive": 10.255088346191407
+        },
+        "fat": {
+          "MAE": 4.0422162854499835,
+          "RMSE": 6.698322143809165,
+          "R2": 0.7755188217110849,
+          "mean_abs_difference_from_archive": 0.7495122433736657,
+          "max_abs_difference_from_archive": 9.899296201416014
+        },
+        "carb": {
+          "MAE": 5.983930149867974,
+          "RMSE": 9.69220746395596,
+          "R2": 0.6905103848061636,
+          "mean_abs_difference_from_archive": 0.8928487148219489,
+          "max_abs_difference_from_archive": 8.673999757812503
+        },
+        "mass": {
+          "MAE": 32.24666720640495,
+          "RMSE": 47.7760324909059,
+          "R2": 0.9005561099849272,
+          "mean_abs_difference_from_archive": 7.160647545109494,
+          "max_abs_difference_from_archive": 92.09124482421873
+        }
+      },
+      "all_predictions_close_to_archive": false,
+      "archive_comparison_tolerance": {
+        "rtol": 0.0001,
+        "atol": 0.001
+      },
+      "stats_sha256": "fc603655bfc15ea82614541302b9e550978745b58722f0e47d7636a0e94773a3",
+      "seconds": 8.684097300007124,
+      "execution_status": "completed"
+    },
+    "freeze": {
+      "stage": "freeze",
+      "rows": 507,
+      "device": "cpu",
+      "threads": 4,
+      "batch_size": 8,
+      "date": "2026-10-16",
+      "original_notebook_sha256": "7ed5236786885b5fb94c2994f9163c6bf29a94565c063492b18c267ffc78496e",
+      "versions": {
+        "torch": "2.11.0+cpu",
+        "torchvision": "0.26.0+cpu",
+        "timm": "1.0.27"
+      },
+      "preprocessing": "PIL RGB; torchvision Resize((224,224)) bilinear/antialias default; ToTensor; ImageNet normalization.",
+      "training_performed": false,
+      "checkpoint_sha256": "1a940d8acda1b07663de66f05115ac0d77f861859700da0a7e4985b685c45ca6",
+      "checkpoint_bytes": 589297424,
+      "strict_state_load": true,
+      "exact_caption_matches": 507,
+      "facts_source": "historical_archived_facts",
+      "facts_sha256": "f1300b077e72b6b17e68bdba37ba312ab923301c407b54915eff4409b3152645",
+      "decoding": {
+        "num_beams": 4,
+        "max_length": 96,
+        "early_stopping": true,
+        "no_repeat_ngram_size": 3,
+        "fact_max_length": 160
+      },
+      "tokenizer_class": "T5Tokenizer",
+      "transformers": "5.12.1",
+      "seconds": 353.91291360001196,
+      "execution_status": "completed"
+    },
+    "pipeline_sample": {
+      "stage": "freeze",
+      "rows": 8,
+      "device": "cpu",
+      "threads": 4,
+      "batch_size": 8,
+      "date": "2026-10-16",
+      "original_notebook_sha256": "7ed5236786885b5fb94c2994f9163c6bf29a94565c063492b18c267ffc78496e",
+      "versions": {
+        "torch": "2.11.0+cpu",
+        "torchvision": "0.26.0+cpu",
+        "timm": "1.0.27"
+      },
+      "preprocessing": "PIL RGB; torchvision Resize((224,224)) bilinear/antialias default; ToTensor; ImageNet normalization.",
+      "training_performed": false,
+      "checkpoint_sha256": "1a940d8acda1b07663de66f05115ac0d77f861859700da0a7e4985b685c45ca6",
+      "checkpoint_bytes": 589297424,
+      "strict_state_load": true,
+      "exact_caption_matches": 0,
+      "facts_source": "fresh_cnn_checkpoint",
+      "facts_sha256": "48ac7c9f73e1f48c66c97706ae1acb2ba3bcb810d59d7b235b4e1f46e89575f8",
+      "decoding": {
+        "num_beams": 4,
+        "max_length": 96,
+        "early_stopping": true,
+        "no_repeat_ngram_size": 3,
+        "fact_max_length": 160
+      },
+      "tokenizer_class": "T5Tokenizer",
+      "transformers": "5.12.1",
+      "seconds": 11.577844500003266,
+      "execution_status": "completed"
+    }
+  },
+  "freeze_metric_comparison": {
+    "NutAcc_calories": {
+      "checkpoint": 98.42,
+      "archived": 98.42,
+      "matches": true
+    },
+    "NutAcc_protein": {
+      "checkpoint": 97.04,
+      "archived": 97.04,
+      "matches": true
+    },
+    "NutAcc_fat": {
+      "checkpoint": 92.5,
+      "archived": 92.5,
+      "matches": true
+    },
+    "NutAcc_carb": {
+      "checkpoint": 93.89,
+      "archived": 93.89,
+      "matches": true
+    },
+    "NutAcc_mass": {
+      "checkpoint": 100.0,
+      "archived": 100.0,
+      "matches": true
+    },
+    "NutAcc_avg": {
+      "checkpoint": 96.37,
+      "archived": 96.37,
+      "matches": true
+    },
+    "MAE_calories": {
+      "checkpoint": 52.25,
+      "archived": 52.25,
+      "matches": true
+    },
+    "MAE_protein": {
+      "checkpoint": 5.21,
+      "archived": 5.21,
+      "matches": true
+    },
+    "MAE_fat": {
+      "checkpoint": 4.05,
+      "archived": 4.05,
+      "matches": true
+    },
+    "MAE_carb": {
+      "checkpoint": 5.77,
+      "archived": 5.77,
+      "matches": true
+    },
+    "MAE_mass": {
+      "checkpoint": 33.65,
+      "archived": 33.65,
+      "matches": true
+    },
+    "Omit_calories": {
+      "checkpoint": 1.6,
+      "archived": 1.6,
+      "matches": true
+    },
+    "Omit_protein": {
+      "checkpoint": 3.0,
+      "archived": 3.0,
+      "matches": true
+    },
+    "Omit_fat": {
+      "checkpoint": 7.5,
+      "archived": 7.5,
+      "matches": true
+    },
+    "Omit_carb": {
+      "checkpoint": 6.1,
+      "archived": 6.1,
+      "matches": true
+    },
+    "Omit_mass": {
+      "checkpoint": 0.0,
+      "archived": 0.0,
+      "matches": true
+    },
+    "BLEU-4": {
+      "checkpoint": 0.4062,
+      "archived": 0.4062,
+      "matches": true
+    },
+    "CIDEr": {
+      "checkpoint": 2.3827,
+      "archived": 2.3827,
+      "matches": true
+    }
+  },
+  "config_provenance": {
+    "vit": {
+      "model": "google/vit-base-patch16-224-in21k",
+      "revision": "b4569560a39a0f1af58e3ddaf17facf20ab919b0",
+      "files": {
+        "config.json": "d477a481f825c170a1bb8cd5e4f5788319466ecf4ede0eb24e9cd923a9aa8fea"
+      }
+    },
+    "t5": {
+      "model": "google-t5/t5-small",
+      "revision": "df1b051c49625cf57a3d0d8d3863ed4d13564fe4",
+      "files": {
+        "config.json": "530e25060e3a8d5f7b0fcf53bfea9f3601165161f3b1914676e98d97cf07bcf1",
+        "generation_config.json": "f5a1c7e2be8092018d8835128987edf0111637dd98e90599cc80310fef75d95a",
+        "spiece.model": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86",
+        "tokenizer_config.json": "d1e7146101aa96282057f374aa9c3b260fba2109e5990edb1775d6efc70ffa3c",
+        "tokenizer.json": "d2acde0d8d71dd30a711834b07781b9c89feaac33fd332f60507699282740066"
+      }
+    }
+  },
+  "source_files_sha256": {
+    "validation/cnn-full/summary.json": "d2a40b3af91b0c988ddaa6373984195389a39acb85a92696867cce8038162f03",
+    "validation/freeze-full/summary.json": "019dbd2b594c4af437b341711b23b0d74b0a3ccbef00464127ab8d053322566b",
+    "validation/pipeline-sample/summary.json": "5dc3b93f0e6c0b796da6efcf2fe024d05d329e49733f673119eafab3cff62888",
+    "validation/cnn-full/cnn_predictions_comparison.csv": "e28167795c316350f344091057b3ce266bac37532122d3391cc0135a9b041243",
+    "validation/freeze-full/freeze_captions_comparison.csv": "729a7fabc021fdf91da115f98849746bc16a1cf414a170d6fe8fdb15c0419d7c",
+    "validation/pipeline-sample/freeze_captions_comparison.csv": "26e532a69d051d14bcd4356af8a7738de91f3061d7bc24346cc558a32dbacc1b"
+  },
+  "external_inputs_sha256": {
+    "archive/dish_ids_test.txt": "e7295180eb461648be3844435093736f0028ad4863fa704653df5e120001a936",
+    "archive/metadata_clean.csv": "4576dcf0b38092b175a73d38324b25fa1b3bdf9c74b3ec2590f70c83e4c9606e",
+    "archive/predictions.csv": "a5063dae54578e7285bb016a02f81670b72a18726b899dbe8234d5a26f2bb297",
+    "archive/fact_strings.csv": "f1300b077e72b6b17e68bdba37ba312ab923301c407b54915eff4409b3152645",
+    "archive/target_stats_log.json": "fc603655bfc15ea82614541302b9e550978745b58722f0e47d7636a0e94773a3",
+    "archive/test_captions_freeze.csv": "a646056d9f2124487df9e71bef93c92e817f13a8730be82f65c39ccfe4ef0d1c",
+    "inputs/cnn_best.pth": "b36540c5769bd630668345338b74daaa7812f7f4fc79d3e7eb7c926765f8bb8f",
+    "inputs/captioner_freeze.pth": "1a940d8acda1b07663de66f05115ac0d77f861859700da0a7e4985b685c45ca6",
+    "inputs/vit/config.json": "d477a481f825c170a1bb8cd5e4f5788319466ecf4ede0eb24e9cd923a9aa8fea",
+    "inputs/t5/config.json": "530e25060e3a8d5f7b0fcf53bfea9f3601165161f3b1914676e98d97cf07bcf1",
+    "inputs/t5/generation_config.json": "f5a1c7e2be8092018d8835128987edf0111637dd98e90599cc80310fef75d95a",
+    "inputs/t5/spiece.model": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86",
+    "inputs/t5/tokenizer_config.json": "d1e7146101aa96282057f374aa9c3b260fba2109e5990edb1775d6efc70ffa3c",
+    "inputs/t5/tokenizer.json": "d2acde0d8d71dd30a711834b07781b9c89feaac33fd332f60507699282740066"
+  },
+  "bundled_files_sha256": {
+    "validation/evidence/cnn-test.csv": "e28167795c316350f344091057b3ce266bac37532122d3391cc0135a9b041243",
+    "validation/evidence/freeze-captions.csv": "7edf7520e0d694675605790be16280d2ab28e458080aa7e87e5a2167ddd6110e",
+    "validation/evidence/pipeline-sample.csv": "a55abd6aa0bd6c615841bd8aff9c19a28954718bc445a58bd1b4fa55566eb2da",
+    "results/eval_final.csv": "e56178981e0f8721804762f3b6ffeb28f210fd175bcfb2a61cd98f74042fed5c",
+    "results/cnn_test_metrics.csv": "02d818e19fb1c3dddb128724209e3f7647835caa09afafc301bd14bf7e80bf13",
+    "docs/assets/js/archive-data.js": "2eeceb55c4999f3fb01b368e2e9c1aaa6dd70b145cbe898b8257429bde6ff4e6"
+  },
+  "source_png_collection_sha256": "b5aa867bc194b09d89367fa45c44a65a53e5092c6767f253d792937a85fa4d18",
+  "webp_collection_sha256": "25074b14e085446d19e17f70d9ee2478f03b7897b40258d1a6392aa6e3e7dee9"
+}

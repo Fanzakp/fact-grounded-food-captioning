@@ -1,0 +1,35 @@
+name: Portfolio checks
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Verify saved evidence and Python syntax
+        run: python -B validation/verify.py
+      - name: Run unit tests
+        run: python -B -m unittest discover -s tests -v
+      - name: Validate JavaScript syntax
+        run: |
+          node --check docs/assets/js/archive-data.js
+          node --check docs/assets/js/explorer.js
+          node --check tests/test_explorer.cjs
+      - name: Test demo events
+        run: node --test tests/test_explorer.cjs

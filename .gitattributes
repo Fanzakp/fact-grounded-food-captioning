@@ -1,0 +1,7 @@
+# Keep archived evidence byte-identical across Windows and Linux checkouts.
+* text=auto eol=lf
+results/*.csv -text
+docs/assets/js/archive-data.js -text
+validation/evidence/*.csv -text
+*.webp -text
+*.png -text

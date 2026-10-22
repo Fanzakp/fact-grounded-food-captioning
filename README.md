@@ -24,6 +24,8 @@ Template Fill achieves higher BLEU/CIDEr because it shares the template-based re
 
 ## Interactive demo
 
+**[🌐 Try the Live Interactive Demo](https://fanzakp.github.io/fact-grounded-food-captioning/)**
+
 ![Food photo, nutrients, and two archived model captions](results/demo-preview.png)
 
 Explore **507 photos and 3,042 archived captions** with ingredient/dish search, synchronized filters and gallery, model comparison, and supplied-versus-measured nutrients. The demo displays stored outputs; it does not run live inference.
@@ -32,7 +34,7 @@ Explore **507 photos and 3,042 archived captions** with ingredient/dish search, 
 python -m http.server 8000 --directory docs
 ```
 
-Open **http://localhost:8000/**. No hosted demo is claimed.
+For local development, open **http://localhost:8000/** after starting the server.
 
 ## Validation status
 
